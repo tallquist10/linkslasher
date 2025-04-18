@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast links for long Urls</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+        h1 {
+            color: #333;
+        }
+        input {
+            padding: 10px;
+            width: 70%;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+            margin-right: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .copy-button {
+            background-color: #008CBA;
+            margin-left: 10px;
+        }
+        .copy-button:hover {
+            background-color: #007bb5;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>{{.title}}</h1>
+    <div>
+        <input type="text" id="longUrl" placeholder="Enter a long URL">
+        <button id="shortenButton">Shorten</button>
+    </div>
+    <div id="result" class="result" style="display: none;">
+        <p>Shortened URL: <span id="shortenedUrl"></span></p>
+        <button class="copy-button" id="copyButton">Copy</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('shortenButton').addEventListener('click', async function() {
+        const longUrl = document.getElementById('longUrl').value;
+
+        if (!longUrl) {
+            alert('Please enter a URL!');
+            return;
+        }
+
+        try {
+            // Sending request to the API endpoint
+            const response = await fetch('/api/links/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ original: longUrl })
+            });
+
+            if (!response.ok) {
+                throw new Error('Error shortening the URL');
+            }
+
+            const data = await response.json();
+            const shortenedUrl = "https://fastlinks.com/" + data.hash; // assuming API returns the shortened URL in this format
+            console.log(shortenedUrl);
+            // Display the shortened URL and show the copy button
+            document.getElementById('shortenedUrl').textContent = shortenedUrl;
+            document.getElementById('result').style.display = 'block';
+
+            // Add functionality to copy the URL
+            document.getElementById('copyButton').addEventListener('click', function() {
+                navigator.clipboard.writeText(shortenedUrl).then(() => {
+                    alert('Copied to clipboard!');
+                }).catch(err => {
+                    alert('Failed to copy: ' + err);
+                });
+            });
+        } catch (error) {
+            alert('Something went wrong: ' + error.message);
+        }
+    });
+</script>
+
+</body>
+</html>

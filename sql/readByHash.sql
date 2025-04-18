@@ -1,0 +1,1 @@
+SELECT hash, original FROM links WHERE hash = ?

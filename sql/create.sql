@@ -1,0 +1,1 @@
+INSERT INTO links(original, hash) VALUES (?, ?)
