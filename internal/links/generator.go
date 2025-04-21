@@ -12,7 +12,7 @@ type Generator struct {
 }
 
 func getHashOptions() []int {
-	results := make([]int, 64)
+	results := make([]int, 38)
 	results[0] = 36 // $
 	results[1] = 42 // *
 	index := 2
@@ -20,11 +20,6 @@ func getHashOptions() []int {
 	//numbers
 	for i := 0; i < 10; i++ {
 		results[index] = 48 + i
-		index++
-	}
-	//capital letters
-	for i := 0; i < 26; i++ {
-		results[index] = 65 + i
 		index++
 	}
 	//lower case letters
