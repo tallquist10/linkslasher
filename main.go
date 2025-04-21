@@ -45,6 +45,13 @@ func initLinkSlasher(db *sql.DB, router *gin.Engine) *LinkSlasher {
 	if err != nil {
 		panic(err)
 	}
+	router.GET("/:hash", func(c *gin.Context) {
+		link, err := linksService.GetLink(c.Param("hash"))
+		if err != nil {
+			c.IndentedJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		}
+		c.Redirect(http.StatusTemporaryRedirect, link.Original)
+	})
 
 	linksApi := api.NewLinksApi(router, linksService)
 

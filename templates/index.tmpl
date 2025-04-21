@@ -95,7 +95,6 @@
 
             const data = await response.json();
             const shortenedUrl = "https://fastlinks.com/" + data.hash; // assuming API returns the shortened URL in this format
-            console.log(shortenedUrl);
             // Display the shortened URL and show the copy button
             document.getElementById('shortenedUrl').textContent = shortenedUrl;
             document.getElementById('result').style.display = 'block';

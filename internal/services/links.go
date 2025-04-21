@@ -58,8 +58,8 @@ func NewLinksService(
 }
 
 func (ls *LinksService) GetLink(hash string) (*links.Link, error) {
-	var link *links.Link
-	err := ls.getLink.QueryRow(hash).Scan(link)
+	link := &links.Link{}
+	err := ls.getLink.QueryRow(hash).Scan(&link.Hash, &link.Original)
 	if err != nil {
 		return nil, err
 	}
