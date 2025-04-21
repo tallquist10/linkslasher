@@ -12,7 +12,7 @@ type Generator struct {
 }
 
 func getHashOptions() []int {
-	results := make([]int, 64)
+	results := make([]int, 38)
 	results[0] = 36 // $
 	results[1] = 42 // *
 	index := 2
@@ -20,11 +20,6 @@ func getHashOptions() []int {
 	//numbers
 	for i := 0; i < 10; i++ {
 		results[index] = 48 + i
-		index++
-	}
-	//capital letters
-	for i := 0; i < 26; i++ {
-		results[index] = 65 + i
 		index++
 	}
 	//lower case letters
@@ -42,12 +37,12 @@ func NewGenerator() *Generator {
 }
 
 /*
-* Characters that can make up links are as follows: [A-Za-z0-9$*]
-* This means that we have 26+26+10+2=64 options to create our characters
+* Characters that can make up links are as follows: [a-z0-9$*]
+* This means that we have 26+10+2=38 options to create our characters
 * How long can we make this that it's still pretty short, but also that it's going to be
 * hard to accidentally duplicate?
-* x^64 options. 10 characters long is 10^64. That's like a decillion, squared.
-* We'll never reach that amount, we just need to have something that's deterministic and creates
+* 10 characters long is 10^38. That's like a decillion, times 100 million.
+* We'll never reach that amount of distinct links, we just need to have something that's deterministic and creates
 * fast redirects for users
 *
 * 36, 42, 48-57, 65-90, 97-122
